@@ -1,4 +1,3 @@
-// C
 # Prerequisites
 *.d
 
@@ -52,7 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-// Java
 # Compiled class file
 *.class
 
