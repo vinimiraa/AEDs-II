@@ -68,14 +68,14 @@ class Palindromo
             entrada = MyIO.readLine();
             if( !isFim( entrada ) )
             {
-            if( isPalindromo( entrada ) )
-            {
-                MyIO.println( "SIM" );
-            }
-            else
-            {
-                MyIO.println( "NAO" );
-            } // end if
+                if( isPalindromo( entrada ) )
+                {
+                    MyIO.println( "SIM" );
+                }
+                else
+                {
+                    MyIO.println( "NAO" );
+                } // end if
             }
         } while ( isFim( entrada ) == false ); // end do while
     } // end main ( )
