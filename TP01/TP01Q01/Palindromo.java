@@ -76,7 +76,7 @@ class Palindromo
                 {
                     MyIO.println( "NAO" );
                 } // end if
-            }
+            } // end if
         } while ( isFim( entrada ) == false ); // end do while
     } // end main ( )
 } // end class
