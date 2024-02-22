@@ -32,7 +32,7 @@ class Palindromo
             result = true;
         } // end if
         return ( result );
-    } // end isFim
+    } // end isFim ( )
 
     /**
      *  Funcao para verificar se uma string e' um palindromo.
@@ -66,6 +66,8 @@ class Palindromo
         do 
         {
             entrada = MyIO.readLine();
+            if( !isFim( entrada ) )
+            {
             if( isPalindromo( entrada ) )
             {
                 MyIO.println( "SIM" );
@@ -74,6 +76,7 @@ class Palindromo
             {
                 MyIO.println( "NAO" );
             } // end if
+            }
         } while ( isFim( entrada ) == false ); // end do while
-    } // end main
+    } // end main ( )
 } // end class
