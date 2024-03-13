@@ -8,12 +8,12 @@
  *  Author: Vinicius Miranda de Araujo
  *   
  *  Para compilar em terminal (janela de comandos):
- *       Linux : gcc -o Alteracao Alteracao.c
- *       Windows: gcc -o Alteracao Alteracao.c
+ *       Linux : gcc -o AlteracaoRec AlteracaoRec.c
+ *       Windows: gcc -o AlteracaoRec AlteracaoRec.c
  *   
  *  Para executar em terminal (janela de comandos):
- *       Linux : ./Alteracao
- *       Windows: Alteracao
+ *       Linux : ./AlteracaoRec
+ *       Windows: AlteracaoRec
  *   
 */
 
@@ -47,7 +47,6 @@ bool isFim ( const char *s )
  */
 char randomChar( )
 {
-    srand( 4 );
     char c = ( char )( 'a' + abs(  rand( ) % 26 ) );
     return ( c );
 } // end randomChar ( )
@@ -118,6 +117,7 @@ char* readLine( )
 */
 int main( int argc, char const *argv[] )
 {
+    srand( 4 );
     char *entrada[1000];
     int numEntrada = 0;
 

@@ -4,20 +4,20 @@
  *  Curso de Ciencia da Computacao
  *  Algoritmos e Estruturas de Dados II
  *   
- *  TP01Q01 - 19 / 02 / 2024
+ *  TP01Q10 - 11 / 03 / 2024
  *  Author: Vinicius Miranda de Araujo
  *   
  *  Para compilar em terminal (janela de comandos):
- *       Linux : javac Palindromo.java
- *       Windows: javac Palindromo.java
+ *       Linux : javac PalindromoRec.java
+ *       Windows: javac PalindromoRec.java
  *   
  *  Para executar em terminal (janela de comandos):
- *       Linux : java Palindromo
- *       Windows: java Palindromo
+ *       Linux : java PalindromoRec
+ *       Windows: java PalindromoRec
  *   
 */
 
-class Palindromo
+class PalindromoRec
 {
     /**
      *  Funcao para verificar se a entrada e' igual a "FIM" 
@@ -38,21 +38,33 @@ class Palindromo
      *  Funcao para verificar se uma string e' um palindromo.
      *  @return true se palindromo, false caso contrario.
      *  @param s - String
+     *  @param x - Int: primeiro caractere.
+     *  @param y - Int: ultimo caractere.
     */
-    public static boolean isPalindromo ( String s )
+    public static boolean isPalindromoRec ( String s, int x, int y )
     {
-        boolean result = true;
-        int x = 0, y = 0;
-        
-        for ( x = 0, y = s.length( )-1; x < s.length( )/2; x=x+1, y=y-1 )
+        if( x < s.length()/2 )
         {
-            if ( s.charAt(x) != s.charAt(y) ) // verificar se o primeiro caractere e' diferente do ultimo
+            if( (int)s.charAt(x) == (int)s.charAt(y) )
             {
-                result = false;  
-                x = s.length( ); // interromper a repeticao
+                return ( isPalindromoRec(s, ++x, --y) );
+            }
+            else
+            {
+                return ( false );
             } // end if
-        } // end for
-        return ( result );
+        } // end if
+        return ( true );
+    } // end isPalindromo ( )
+
+    /**
+     *  Funcao para verificar se uma string e' um palindromo.
+     *  @return true se palindromo, false caso contrario.
+     *  @param s - String
+    */
+    public static boolean isPalindromo( String s )
+    {
+        return ( isPalindromoRec( s, 0, s.length()-1 ) );
     } // end isPalindromo ( )
 
     /**

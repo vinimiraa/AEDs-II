@@ -4,20 +4,20 @@
  *  Curso de Ciencia da Computacao
  *  Algoritmos e Estruturas de Dados II
  *   
- *  TP01Q06 - 26 / 02 / 2024
+ *  TP01Q15 - 12 / 03 / 2024
  *  Author: Vinicius Miranda de Araujo
  *   
  *  Para compilar em terminal (janela de comandos):
- *       Linux : javac Is.java
- *       Windows: javac Is.java
+ *       Linux : javac IsRec.java
+ *       Windows: javac IsRec.java
  *   
  *  Para executar em terminal (janela de comandos):
- *       Linux : java Is
- *       Windows: java Is
+ *       Linux : java IsRec
+ *       Windows: java IsRec
  *   
 */
 
-public class Is 
+public class IsRec 
 {
     /**
      *  Funcao principal.
@@ -163,26 +163,33 @@ public class Is
      *  @param s - String.
      *  @return true se so' tem vogais, false caso contrario.
      */
-    public static boolean isVogal( String s )
+    public static boolean isVogalRec( String s, int x )
     {
-        boolean result = true;
-        int x = 0;
-        if( isAlpha( s ) )
+        if( x < s.length() )
         {
-            while( x < s.length() && result )
+            char c = s.charAt( x );
+            if( !isCharVogal( c ) )
             {
-                char c = s.charAt( x );
-                if( !isCharVogal( c ) )
-                {
-                    result = false;
-                } // end if
-                x = x + 1;
-            } // end while
-        } 
+                return ( false );
+            } 
+            else
+            {
+                return ( isVogalRec(s, x+1) );
+            }// end if
+        } // end if
         else
         {
-            result = false;
+            return ( true );
         }// end if
+    } // end isVogalRec ( )
+
+    public static boolean isVogal( String s )
+    {
+        boolean result = false;
+        if( isAlpha(s) )
+        {
+            result = isVogalRec(s, 0);
+        } // end if
         return ( result );
     } // end isVogal ( )
 
@@ -191,26 +198,33 @@ public class Is
      *  @param s - String.
      *  @return true se so' tem consoantes, false caso contrario.
      */
-    public static boolean isConsoante( String s )
+    public static boolean isConsoanteRec( String s, int x )
     {
-        boolean result = true;
-        int x = 0;
-        if( isAlpha( s ) )
+        if( x < s.length( ) )
         {
-            while( x < s.length( ) && result )
+            char c = s.charAt( x );
+            if( isCharVogal( c ) )
             {
-                char c = s.charAt( x );
-                if( isCharVogal( c ) )
-                {
-                    result = false;
-                } // end if
-                x = x + 1;
-            } // end while
+                return ( false );
+            }
+            else
+            {
+                return ( isConsoanteRec(s, x+1) );
+            } // end if
         }
         else
         {
-            result = false;
+            return ( true );
         }// end if
+    } // end isConsoanteRec ( )
+
+    public static boolean isConsoante( String s )
+    {
+        boolean result = false;
+        if( isAlpha(s) )
+        {
+            result = isConsoanteRec(s, 0);
+        } // end if
         return ( result );
     } // end isConsoante ( )
 
@@ -219,48 +233,73 @@ public class Is
      *  @param s - String.
      *  @return true se numero inteiro, false caso contrario.
      */
-    public static boolean isInteger( String s )
+    public static boolean isIntegerRec( String s, int x )
     {
-        boolean result = true;
-        for( int x = 0; x < s.length( ); x = x + 1 )
+        if( x < s.length( ) )
         {
             char c = s.charAt( x );
             if( !isDigit( c ) )
             {
-                result = false;
-                x = s.length( );
+                return ( false );
             } // end if
-        } // end for
-        return ( result );
+            else
+            {
+                return isIntegerRec(s, x+1);
+            } // end if
+        }
+        else
+        {
+            return ( true );
+        } // end if
+    } // end isIntegerRec ( )
+
+    public static boolean isInteger( String s )
+    {
+        return ( isIntegerRec(s, 0) );
     } // end isInteger ( )
 
     /**
      *  Funcao para verificar se a string e composta por numeros e e' real.
      *  @param s - String.
+     *  @param x - Int: posicao inicial.
+     *  @param ponto - Int: quantidade de ponto.
      *  @return true se numero real, false caso contrario.
      */
-    public static boolean isReal( String s )
+    public static boolean isRealRec( String s, int x, int ponto )
     {
-        boolean result = false;
-        int count = 0;
-        int ponto = 0;
-        for( int x = 0; x < s.length( ); x = x + 1 )
+        if( x < s.length() )
         {
             char c = s.charAt( x );
             if( isDigit( c ) )
             {
-                count++;
+                return ( isRealRec(s, x+1, ponto) );
             } 
             else if( c =='.' || c == ',' )
             {
-                ponto++;
+                ponto = ponto + 1;
+                return ( isRealRec(s, x+1, ponto) );
+            }
+            else
+            {
+                return ( false );
             }// end if
-        } // end for
-        if( count > 0 && ponto <= 1 )
+        }
+        else
         {
-            result = true;
+            if( ponto <= 1 )
+            {
+                return ( true );
+            }
+            else
+            {
+                return ( false );
+            } // end if
         } // end if
-        return ( result );
+    } // end isRealRec ( )
+
+    public static boolean isReal( String s )
+    {
+        return ( isRealRec(s, 0, 0) );
     } // end isReal ( )
 
 } // end class

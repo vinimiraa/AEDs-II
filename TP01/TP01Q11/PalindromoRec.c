@@ -4,16 +4,16 @@
  *  Curso de Ciencia da Computacao
  *  Algoritmos e Estruturas de Dados II
  *   
- *  TP01Q02 - 22 / 02 / 2024
+ *  TP01Q11 - 12 / 03 / 2024
  *  Author: Vinicius Miranda de Araujo
  *   
  *  Para compilar em terminal (janela de comandos):
- *       Linux : gcc -o Palindromo Palindromo.c
- *       Windows: gcc -o Palindromo Palindromo.c
+ *       Linux : gcc -o PalindromoRec PalindromoRec.c
+ *       Windows: gcc -o PalindromoRec PalindromoRec.c
  *   
  *  Para executar em terminal (janela de comandos):
- *       Linux : ./Palindromo
- *       Windows: Palindromo
+ *       Linux : ./PalindromoRec
+ *       Windows: PalindromoRec
  *   
 */
 
@@ -23,8 +23,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <wchar.h>   // wide-character types
-#include <locale.h>  // location specific settings
 
 // ---------------------------------------- Metodos
 
@@ -46,23 +44,34 @@ bool isFim( char* s )
 /**
  *  Funcao para verificar se uma string e' um palindromo.
  *  @return true se palindromo, false caso contrario.
- *  @param s - char*.
+ *  @param s - char*: string.
+ *  @param s - int: primeiro caractere.
+ *  @param y - int: ultimo caractere.
 */
-bool isPalindromo ( char *s )
+bool isPalindromoRec ( char *s, int x, int y )
 {
-    bool result = true;
-    int x = 0, y = 0;
-    unsigned int length = strlen( s );
-
-    for ( x = 0, y = length-1; x < length/2; x=x+1, y=y-1 )
+    if( x < strlen(s)/2 )
     {
-        if ( s[x] != s[y] ) // verificar se o primeiro caractere e' diferente do ultimo
+        if( s[x] == s[y] )
         {
-            result = false;  
-            x = length; // interromper a repeticao
+            return ( isPalindromoRec(s, ++x, --y) );
+        }
+        else
+        {
+            return ( false );
         } // end if
-    } // end for
-    return ( result );
+    } // end if
+    return ( true );
+} // end isPalindromoRec ( )
+
+/**
+ *  Funcao para verificar se uma string e' um palindromo.
+ *  @return true se palindromo, false caso contrario.
+ *  @param s - char*: string.
+*/
+bool isPalindromo( char* s )
+{
+    return ( isPalindromoRec( s, 0, strlen(s)-1 ) );
 } // end isPalindromo ( )
 
 /**
@@ -92,7 +101,6 @@ char* readLine( )
 */
 int main( int argc, char const *argv[] )
 {
-    setlocale(LC_CTYPE, "UTF-8"); // setCharset
     char* entrada = NULL;
 
     do
@@ -109,8 +117,8 @@ int main( int argc, char const *argv[] )
             {
                 printf( "NAO\n" );
             } // end if
-            free( entrada );
         } // end if
+        free( entrada );
     } while ( !isFim( entrada ) );
     
     return ( 0 );
