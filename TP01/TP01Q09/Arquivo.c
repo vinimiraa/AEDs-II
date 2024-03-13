@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
+#include <locale.h>  // location specific settings
 
 // ---------------------------------------- Metodos
 
@@ -89,6 +89,7 @@ void readDoubleFromFile( int n, char* filename )
 
 int main ( int argc, char* argv[] )
 {
+    setlocale(LC_NUMERIC, "en_US.UTF-8");
     int n = 0;
     double input = 0.0;
     char *filename = "ARQUIVO.TXT";
