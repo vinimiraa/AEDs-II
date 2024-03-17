@@ -76,10 +76,10 @@ public class Leitura
                 consoantes -= ( 2*br + 3*table ); // descontar as consoantes das palavras "br" e "table"
 
                 printVariaveis( );
-                System.out.printf( "consoantes(%s) " , consoantes );
+                System.out.printf( "consoante(%s) " , consoantes );
                 System.out.printf( "<br>(%s) " , br );
                 System.out.printf( "<table>(%s) " , table );
-                System.out.printf( "%s \n" , nome );
+                System.out.printf( "%s\n" , nome );
             } // end if
         } while( !isFim( nome ) ); // end while
 
