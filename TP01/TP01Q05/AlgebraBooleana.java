@@ -45,6 +45,11 @@ public class AlgebraBooleana
         } while ( !isEquals( entrada, "0" ) ); // end do while
     } // end main ( )
 
+    /**
+     *  Funcao para tratar a expressao para fazer a algebra booleana.
+     *  @param input - String.
+     *  @return String tratada.
+     */
     public static String treatment( String input )
     {
         String expressao = "";
@@ -52,10 +57,10 @@ public class AlgebraBooleana
 
         n = input.charAt(0) - 48; // capturar quantos bits serao utilizados
 
-        expressao = removeBlank( input );                           // remover espacos em branco
+        expressao = removeBlank( input );                              // remover espacos em branco
         expressao = replaceAll( "and", 'a', expressao );  // trocar "and" por 'a'
-        expressao = replaceAll( "or", 'o', expressao  );  // trocar "or" por 'o'
-        expressao = replaceAll( "not", 'n', expressao   );  // trocar "not" por 'n'
+        expressao = replaceAll( "or" , 'o', expressao  ); // trocar "or" por 'o'
+        expressao = replaceAll( "not", 'n', expressao );  // trocar "not" por 'n'
 
         // trocar 'A', 'B' e 'C' por seus respectivos bits
         for( int x = 0; x < n; x = x + 1 )
@@ -64,15 +69,22 @@ public class AlgebraBooleana
             char newC = expressao.charAt(x+1); 
             expressao = replaceAll( c, newC, expressao );
         } // end for
+        
+        // pegar apenas a expressao logica
+        expressao = subString(expressao, n+1, expressao.length() );
 
         return ( expressao );
     } // end algebraBooleana ( )
 
-    public static String identifyExp( String input )
+    /**
+     *  Funcao para identificar e resolver a expressao.
+     *  @param input - String.
+     *  @return String: expressao resolvida.
+     */
+    public static String solveExp( String input )
     {
-        String result = "";
         int inputLen = input.length();
-        char operation = input.charAt(0);
+        char operation = input.charAt( 0 );
         boolean flag = true;
         switch( operation ) 
         {
@@ -83,53 +95,58 @@ public class AlgebraBooleana
                     if( input.charAt(y) == '0' )
                     {
                         flag = false;
-                        result = "0";
+                        return ( "0" );
                     } // end if
                 } // end for
-                break;
+                return ( "1" );
             case 'o':
-                    flag = false;
-                    for( int y = 2; y < inputLen && !flag; y = y + 1 )
-                    {
-                        if( input.charAt(y) == '1' )
-                        {
-                            flag = true;
-                            result = "1";
-                        } // end if
-                    } // end for
-                    break;
-            case 'n':
-                if( input.charAt(3) == '0' )
+                flag = false;
+                for( int y = 2; y < inputLen && !flag; y = y + 1 )
                 {
-                    result = "1";
+                    if( input.charAt(y) == '1' )
+                    {
+                        flag = true;
+                        return ( "1" );
+                    } // end if
+                } // end for
+                return ( "0" );
+            case 'n':
+                if( input.charAt(2) == '0' )
+                {
+                    return ( "1" );
                 }
                 else
                 {
-                    result = "0";
+                    return ( "0" );
                 } // end if
-                break;
             default:
-                result = "";
+                return ( "" );
         } // end switch
-        return ( result );
-    } // end identifyExp ( )
+    } // end solveExp ( )
 
+    /**
+     *  Funcao para resolver toda a equacao.
+     *  @param input - String.
+     *  @return String: equacao resolvida.
+     */
     public static boolean solveEquation( String input )
     {
-        boolean result = false;
         String expressao = treatment( input );
+        boolean result;
+        // MyIO.println( "Expressao tratada: " + expressao );
 		while( expressao.contains( "(" ) )
         {
-			int end = expressao.indexOf( ')' );
-			int start = expressao.lastIndexOf( '(', end );
-
-			String subExpr = subString( expressao, start-1, end+1 );			
-			String resultString = identifyExp( subExpr );
+            int start = expressao.lastIndexOf( '(' );
+            int end   = expressao.indexOf( ')', start );
             
-			expressao = subString( expressao, 0, start-1 ) + resultString + 
+			String subExp = subString( expressao, start-1, end+1 );			
+			String resultString = solveExp( subExp );
+            // MyIO.println( "Passo: " + expressao );
+			expressao = subString( expressao, 0, start-1 ) + 
+                        resultString + 
                         subString( expressao, end+1, expressao.length() );	
 		} // end while 
-		result = expressao.equals("1");										
+		result = isEquals( expressao, "1" );										
         return ( result );
     } // end solveEquation ( )
 
@@ -176,7 +193,11 @@ public class AlgebraBooleana
         return ( result );
     } // end subString ( )
 
-    // remover os espacos em branco na string
+    /**
+     *  Funcao para remover os espacos em branco na string.
+     *  @param input - String.
+     *  @return String sem espacos sem branco.
+     */
     public static String removeBlank( String input )
     {
         String result = "";
@@ -190,7 +211,13 @@ public class AlgebraBooleana
         return ( result );
     } // end removeBlank ( )
 
-    // substituir uma ocorrencia de string por um caractere
+    /**
+     *  Funcao para substituir uma ocorrencia de string por um caractere.
+     *  @param base - Object: ocorrencia a ser trocada.
+     *  @param newChar - Char: Novo caractere.
+     *  @param input - String.
+     *  @return String alterada.
+     */
     public static String replaceAll( Object base, char newChar, String input ) 
     {
 		String result = "";
