@@ -2,75 +2,110 @@ import java.util.Random;
 
 public class Lista 
 {
-    // atributos
-    private static int[] array;
-    private static int   tam;
+    // ---------------------------------------- atributos
 
-    Lista( int length )
+    protected int[] array;     // arranjo
+    protected int   size;      // tamanho real
+    protected int   capacity;  // capacidade total
+
+    // ---------------------------------------- Construtores
+
+    public Lista( ) 
+    {
+        this(10); // capacidade padrao de 10
+    } // end Lista ( );
+
+    public Lista( int length ) 
     {
         if( length > 0 )
         {
-            tam = length;
-            array = new int[tam];
+            this.capacity = length+4;
+            this.array = new int[this.capacity];
+            this.size = length;
         } // end if
     } // end Lista ( )
 
-    public int getTam( )
-    {
-        return ( tam );
-    }
+    // ---------------------------------------- GETs / SETs
 
-    public int[] getArray()
+    public int getSize( ) 
     {
-        return array;
-    }
+        return ( this.size );
+    } // end getSize ( )
 
-    public void set(int index, int value)
+    public int getCapacity( ) 
     {
-        array[index] = value;
-    }
+        return ( this.capacity );
+    } // end getCapacity ( )
+
+    public void set( int index, int value )
+    {
+        this.array[index] = value;
+    } // end set ( )
 
     public int get( int index )
     {
         int value = 0;
-        if( index >= 0 && index < tam )
+        if( index >= 0 && index < size )
         {
-            value = array[index];
-        }
+            value = this.array[index];
+        } // end if
         return ( value );
-    }
+    } // end get ( )
 
-    public void randValue() 
+    // ----------------------------------------  Outros Metodos
+
+    private void increaseCapacity( ) 
+    {
+        int newCapacity = capacity * 2; // Aumenta em 50%
+        int[] newArray = new int[newCapacity];
+        System.arraycopy(array, 0, newArray, 0, size); // Copia os elementos para o novo array
+        System.arraycopy(newArray, 0, array, 0, size); // Copia os elementos para o novo array
+        array = newArray;
+        capacity = newCapacity;
+    } // end increaseCapacity ( )
+
+    public void add( int value ) 
+    {
+        if( size >= capacity ) 
+        {
+            increaseCapacity( ); // Aumenta a capacidade se necessário
+        } // end if
+        array[size++] = value;
+    } // end add ( )
+
+    public void randValue( ) 
     {
         Random gerador = new Random( );
-        for( int x = 0; x < tam; x = x + 1 )
+        for( int x = 0; x < size; x = x + 1 )
         {
             array[x] = Math.abs( gerador.nextInt( ) % 50 );
-        }
-    }
+        } // end for
+    } // end randValue ( )
 
     public void printLista( )
     {
         System.out.print( "[ " );
-        for( int x = 0; x < tam; x = x + 1 )
+        for( int x = 0; x < size; x = x + 1 )
         {
             System.out.print( array[x] + " " );
-        }
-        System.out.print( "]\n" );
-    }
+        } // end for
+        System.out.println( "]" );
+    } // end printLista ( )
+
+    // ---------------------------------------- Metodos de Pesquisa
 
     public boolean pesquisaSequencial( int value )
     {
         boolean result = false;
-        for( int x = 0; x < tam && !result; x = x + 1 )
+        for( int x = 0; x < size && !result; x = x + 1 )
         {
             if( array[x] == value )
             {
                 result = true;
-            }
-        }
+            } // end if
+        } // end for
         return ( result );
-    }
+    } // end pesquisaSequencial ( )
 
     public int pesquisaBinaria( int value, int esq, int dir )
     {
@@ -96,11 +131,13 @@ public class Lista
         } // end if
     } // end pesquisaBinaria ( )
 
+    // ---------------------------------------- Metodos de Ordenacao
+
     public void bubbleSort( )
     {
-        for( int x = 1; x < tam; x = x + 1 )
+        for( int x = 1; x < size; x = x + 1 )
         {
-            for( int y = 1; y < tam; y = y + 1 )
+            for( int y = 1; y < size; y = y + 1 )
             {
                 if( array[y] > array[y+1] )
                 {
@@ -115,10 +152,10 @@ public class Lista
     public void bubbleSortBest( )
     {
         boolean houveTroca = true;
-        for( int x = 0; x < tam-1 && houveTroca; x = x + 1 )
+        for( int x = 0; x < size-1 && houveTroca; x = x + 1 )
         {
             houveTroca = false;
-            for( int y = 0; y < tam-x-1; y = y + 1 )
+            for( int y = 0; y < size-x-1; y = y + 1 )
             {
                 if( array[y] > array[y+1] )
                 {
@@ -129,7 +166,7 @@ public class Lista
                 } // end if
             } // end for
         } // end for
-    } // end bubbleSort ( )
+    } // end bubbleSortBest ( )
 
     public void insertionSort( )
     {
@@ -146,17 +183,19 @@ public class Lista
         } // end for
     } // end insertionSort ( )
 
+    // ---------------------------------------- Metodos de Insercao e Remocao
+
     public int removerInicio( )
     {
         int value = 0;
-        if( tam > 0 )
+        if( size > 0 )
         {
             value = array[0];
-            for( int x = 1; x < tam; x = x + 1 )
+            for( int x = 1; x < size; x = x + 1 )
             {
                 array[x-1] = array[x];
             } // end for
-            tam--;
+            size--;
         } // end if
         return ( value );
     } // end removerInicio ( )
@@ -164,28 +203,39 @@ public class Lista
     public int removerFim( )
     {
         int value = 0;
-        if( tam > 0 )
+        if( size > 0 )
         {
-            value = array[tam];
-            tam--;
+            value = array[size-1];
+            size--;
         } // end if
         return ( value );
     } // removerFim ( )
 
-    public Lista inserirInicio( int value )
+    public void inserirInicio( int value )
     {
-        Lista array = new Lista(tam+1);
-        if( array != null )
+        if( size < capacity )
         {
-            array = this;
-            for( int x = tam; x >= 0 ; x = x - 1 )
+            for( int x = size-1; x >= 0; x-- ) 
             {
-                set( x+1, get(x) );
-            }
-            set( 0, value);
-        }
-        return ( array );
+                array[x+1] = array[x];
+            } // end for
+            array[0] = value;
+            size++;
+        } // end if
     } // end inserirInicio ( )
-}
 
-
+    public void inserirFim( int value )
+    {
+        if( size < capacity )
+        {
+            array[size] = value;
+            size++;
+        }
+        else
+        {
+            increaseCapacity();
+            array[size] = value;
+            size++;
+        } // end if
+    } // end inserirFim ( )
+} // end class 
