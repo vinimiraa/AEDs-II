@@ -27,18 +27,6 @@
 // ---------------------------------------- Metodos
 
 /**
- *  Funcao para escrever numero real no arquivo.
- *  @param input - double: Numero a ser escrito.
- *  @param filename - char*: Nome do arquivo.
-*/
-void writeDoubleToFile( double input, char* filename )
-{
-    FILE *file = fopen( filename, "ab" );
-    fwrite( &input, sizeof(double), 1, file );
-    fclose( file );
-} // end writeDoubleToFile ( )
-
-/**
  *  Funcao para formatar um numero real e printar para o Verde.
  *  Logica: Converter de double para char e manipular os caracteres. Se for '0' substituir por '\0' e se for '.' o
  *  numero e' inteiro, entao tirar o '.' tambem.
@@ -61,6 +49,23 @@ void formattedDouble( double input )
     } // end while
     printf( "%s\n", buffer );
 } // end formatDouble ( )
+
+/**
+ *  Funcao para escrever numero real no arquivo.
+ *  @param n - int: Quantidade de numeros a serem escritos.
+ *  @param filename - char*: Nome do arquivo.
+*/
+void writeDoubleToFile( int n, char* filename )
+{
+    FILE *file = fopen( filename, "w+b" );
+    for( int x = 0; x < n; x = x + 1 )
+    {
+        double input = 0.0;
+        scanf( "%lf", &input );
+        fwrite( &input, sizeof(double), 1, file );
+    }
+    fclose( file );
+} // end writeDoubleToFile ( )
 
 /**
  *  Funcao para ler numero real do arquivo.
@@ -89,18 +94,14 @@ void readDoubleFromFile( int n, char* filename )
 
 int main ( int argc, char* argv[] )
 {
-    setlocale(LC_NUMERIC, "en_US.UTF-8");
-    int n = 0;
-    double input = 0.0;
+    setlocale( LC_NUMERIC, "en_US.UTF-8" );
+
+    int   n        = 0;
     char *filename = "ARQUIVO.TXT";
 
     scanf( "%d", &n );
     
-    for( int x = 0; x < n; x = x + 1 )
-    {
-        scanf( "%lf", &input );
-        writeDoubleToFile( input, filename );
-    } // end for
+    writeDoubleToFile( n, filename );
 
     readDoubleFromFile( n, filename );
 } // end main ( )

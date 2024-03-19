@@ -22,29 +22,21 @@ import java.io.RandomAccessFile;
 public class Arquivo 
 {
     /**
-     * Quantidade de numeros reais.
-     */
-    private static int n = 0;
-
-    /**
      *  Funcao principal
      *  @param args
      */
     public static void main ( String[] args )
     {
         MyIO.setCharset("UTF-8");
-        double input = 0.0;
+
+        int n = 0; 
         String filename = "ARQUIVO.TXT";
 
         n = MyIO.readInt();
 
-        for( int x = 0; x < n; x = x + 1 )
-        {
-            input = MyIO.readDouble();
-            writeDoubleToFile(input, filename);
-        } // end for
-
-        readDoubleFromFile( filename );
+        writeDoubleToFile( n, filename);
+        
+        readDoubleFromFile( n, filename );
     } // end main ( )
 
     /**
@@ -52,13 +44,16 @@ public class Arquivo
      *  @param input - Double: Numero real a ser escrito no arquivo.
      *  @param filename - String: Nome do arquivo.
      */
-    public static void writeDoubleToFile( double input, String filename )
+    public static void writeDoubleToFile( int n, String filename )
     {
         try 
         {
             RandomAccessFile file = new RandomAccessFile( filename, "rw" );
-            file.seek( file.length() );
-            file.writeDouble( input );
+            for( int x = 0; x < n; x = x + 1 )
+            {
+                double input = MyIO.readDouble();
+                file.writeDouble( input );
+            } // end for
             file.close();
         } 
         catch( Exception e )
@@ -71,21 +66,23 @@ public class Arquivo
      *  Funcao para ler numero real do arquivo e mostrar na tela.
      *  @param filename - String: Nome do Arquivo.
      */
-    public static void readDoubleFromFile( String filename )
+    public static void readDoubleFromFile( int n, String filename )
     {
-        double value = 0.0;
         try 
         {
-            RandomAccessFile file = new RandomAccessFile( filename, "r" );
-            for( int pointer = (int)file.length()-8; pointer >= 0; pointer = pointer - 8 )
+            RandomAccessFile file = new RandomAccessFile( filename, "rw" );
+            int fileLen = (int)file.length();
+            for( int x = 0; x < n; x = x + 1 )
             {
-                file.seek(pointer);
-                value = file.readDouble();
-                if( value - (int)value == 0 )
+                fileLen -= 8;
+                file.seek(fileLen);
+                double value = file.readDouble();
+                if( value == (int)value )
                 {  
                     MyIO.println( (int)value );
                 }
-                else{
+                else
+                {
                     MyIO.println( value );
                 } // end if
             } // end for
