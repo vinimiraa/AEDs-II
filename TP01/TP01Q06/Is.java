@@ -23,51 +23,19 @@ public class Is
      *  Funcao principal.
      *  @param args
      */
-    public static void main( String[] args ) 
+    public static void main( String[] args )
     {
+        MyIO.setCharset("UTF-8");
         String entrada = "";
-        String i1 = "", i2 = "", i3 = "", i4 = "";
         do 
         {
             entrada = MyIO.readLine();
             if( !isFim( entrada ) )
             {
-                if( isVogal( entrada ) ) 
-                {
-                    i1 = "SIM";
-                } 
-                else 
-                {
-                    i1 = "NAO";
-                } // end if
-
-                if( isConsoante( entrada ) ) 
-                {
-                    i2 = "SIM";
-                } 
-                else 
-                {
-                    i2 = "NAO";
-                } // end if
-
-                if( isInteger( entrada ) ) 
-                {
-                    i3 = "SIM";
-                } 
-                else 
-                {
-                    i3 = "NAO";
-                } // end if
-
-                if( isReal( entrada ) ) 
-                {
-                    i4 = "SIM";
-                } 
-                else 
-                {
-                    i4 = "NAO";
-                }  // end if
-                MyIO.println( i1 + " " + i2 + " " + i3 + " " + i4 );
+                MyIO.print( isVogal    (entrada) ? "SIM "  : "NAO "  );
+                MyIO.print( isConsoante(entrada) ? "SIM "  : "NAO "  );
+                MyIO.print( isInteger  (entrada) ? "SIM "  : "NAO "  );
+                MyIO.print( isReal     (entrada) ? "SIM\n" : "NAO\n" );
             } // end if
         } while ( isFim( entrada ) == false ); // end do while
     } // end main ( )
