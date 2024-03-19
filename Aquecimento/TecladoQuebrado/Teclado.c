@@ -20,167 +20,90 @@
 // ---------------------------------------- Dependencias
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
 // ---------------------------------------- Metodos
 
-void f1 ( ) // primeira versao
+char* readLine( )
 {
-    char input[100001];
-    char c = '\0';
-    bool home = false;
-    bool end = true;
-    int index = 0;
-
-    while( ( c = getchar( ) ) != EOF )
+    char *string = (char*) calloc ( 1000+1, sizeof(char) );
+    if( string != NULL )
     {
-        if( c == '[' ) 
+        fgets( string, 1000+1, stdin );
+        unsigned int length = strlen( string );
+        // if( length > 0 && ( string[length-1] == '\n' || string[length-1] == '\r') )
+        if( length > 0 && string[length-1] == '\n' )
         {
-            home = true;  end  = false;
-        } 
-        else if( c == ']' ) 
-        {
-            end  = true;  home = false;
-        } 
-        else 
-        {
-            if( !home && !end  ) 
-            {
-                *(input+index) = c;
-                index++;
-            } 
-            else if( end ) 
-            {
-                *(input+index) = c;
-                index++;
-            } 
-            else if( home ) 
-            {
-                int x = 0;
-                int y = index-1;
-                while( !end )
-                {
-                    *(input+(y+1)) = *(input+y);
-                    *(input+x) = c;
-                    y--;
-                    x++;
-                }
-                index++;
-            } // end if
-        }
-
-        if( c == '\n' || c == EOF )
-        {
-            printf( "%s\n", input );
-            index = 0;
-            home = false;
-            end = false;
+            string[length-1] = '\0';
         } // end if
-    }
-}
+    } // end if
+    return ( string ); 
+} // end readLine ( )
 
-void f2( ) // segunda versao
+char *substring( int start, int end, char *string )
 {
-    char c = '\0';
-    char input[100001];
-    bool home = false;
-    bool end  = false;
-    int index = 0;
-
-    while( c = getchar( ) != EOF )
+    int len = strlen( string );
+    int x = 0, y = 0;
+    char* result = (char*) calloc ( len+4, sizeof(char) );
+    for( x = start, y = 0; x < end; x = x + 1, y = y + 1 )
     {
-        if( c == '[' )
-        {
-            home = true; end = false;
-        }
-        else if( c == ']' )
-        {
-            end = true; home = false;
-        }
-        else
-        {
-            if( home )
-            {
-                int len = strlen(input);
-                index = 0;
-                while( home && c != EOF && c != ']' && c != '\n' )
-                {
-                    if( input[index] != '\0' )
-                    {
-                        if( len < 100001 )
-                        {
-                            for( int x = len; x > index; x = x - 1 )
-                            {
-                                *(input+x) = *(input+(x-1));
-                            }
-                        }
-                    }
-                    *(input+index) = c;
-                    index++;
-                    c = getchar( );
-                }
-            }
-            else if( end )
-            {
-                index = strlen(input);
-                *(input+index) = c;
-                index++;
-            }
-            else
-            {
-                *(input+index) = c;
-                index++;
-            }
-        }
+        result[y] = string[x];
+    } // end for
+    result[y] = '\0';
+    return ( result );
+} // end substring ( )
 
-        if( c == '\n' || c == EOF )
-        {
-            printf( "%s\n", input );
-            index = 0;
-            home = false;
-            end = false;
-        } // end if
-    }
-}
-
-/* void f3( )
+void findBrackets( int* start, int* end, char *string )
 {
-    char c = '\0';
-    char input[100001];
-    bool home = false;
-    bool end  = false;
-    int index = 0;
-
-    scanf( "%s", input );
-
-    int len = strlen( input );
+    int len = strlen( string );
+    *start = -1; *end = -1;
     for( int x = 0; x < len; x = x + 1 )
     {
-        if( input[x] == '[' )
+        if( string[x] == '[' )
         {
-            int y = x;
-            while( input[y] != ']' && input[y] != '\n' && input[x] != EOF )
+            *start = x;
+            while( string[x] != ']' )
             {
-                y++;
-            }
-            char *sub = substring( x+1, y-1, input );
-            int subLen= strlen(sub);
-            for( int z = 1; z < subLen; z++)
-            {
-                input[z] = input[z-1];
-            }
-            strcat(sub,input);
-        }
-    }
-}
- */
-/**
- *  Funcao principal.
-*/
-int main( int argc, char const *argv[] )
+                x = x + 1;
+            } // end while
+            *end = x;
+            x = len;
+        } // end if
+    } // end for
+} // end findBracktes ( )
+
+char* concat ( const char * const text1, const char * const text2 )
+{                               // reservar area
+    char *buffer = (char*) malloc ( (strlen(text1) + strlen(text2) + 1) * sizeof(char) );
+    strcpy ( buffer, text1 );
+    strcat ( buffer, text2 );
+    return ( buffer );
+} // end concat ( )
+
+int main( )
 {
-    f2( );
+    char *input = NULL;
+    char *sub   = NULL;
+    int start = 0, end = 0;
+    int len = 0;
+    
+    do
+    {
+        free(input);                                       
+        input = readLine( );                               // ler a string
+        len = strlen( input );                             // pegar o tamanho da string lida
+        findBrackets( &start, &end, input );               // achar as posicoes de '[' e ']', respectivamente
+        sub = substring( start+1, end, input );            // pegar a string dentro dos cochetes
+        char *part1 = substring(0, start, input);          // pegar a string do comeco ate '['  
+        char *part2 = substring(end+1, len, input);        // pegar a string do ']' ate o fim
+        char *result = concat(sub, concat(part1, part2));  // concatenar a string dentro dos colchtes com as duas anteriores
+        printf("%s\n", result);                            // printar o resultado
+        free(result);                                      // liberar espaco de memoria do resultado
+        start = 0; end = 0;                                // reiniciar o contador do inicio e fim dos colchetes
+    } while ( input[0] != '\0' && input[0] != '\n' );
+    
     return ( 0 );
 } // end main ( )
 
