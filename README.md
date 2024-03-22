@@ -11,6 +11,10 @@ Exercícios e estudos desenvolvidos durante o semestre.
 - [Estudos](/Estudos/)
 - [Provas](/Provas/)
 
+## 📚 Material
+
+- [Repositório de AEDs2 do ICEI](https://github.com/icei-pucminas/aeds2.git)
+
 ## 👨‍💻 Autor
 
 `Vinícius Miranda de Araujo`
