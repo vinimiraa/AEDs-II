@@ -125,30 +125,42 @@ public class AlgebraBooleanaRec
     } // end solveExp ( )
 
     /**
-     *  Funcao para resolver toda a equacao.
+     *  Funcao para chamar a funcao recursiva solvaEquationRec
      *  @param input - String.
      *  @return String: equacao resolvida.
      */
     public static boolean solveEquation( String input )
     {
         String expressao = treatment( input );
-        boolean result;
-        // MyIO.println( "Expressao tratada: " + expressao );
-		while( expressao.contains( "(" ) )
+        return ( solveEquationRec( expressao ) );
+    } // end solve Equation
+
+    /**
+     *  Funcao para resolver toda a equacao.
+     *  @param input - String.
+     *  @return String: equacao resolvida.
+     */
+    public static boolean solveEquationRec( String input )
+    {
+        if( input.contains( "(" ) )
         {
-            int start = expressao.lastIndexOf( '(' );
-            int end   = expressao.indexOf( ')', start );
+            int start = input.lastIndexOf( '(' );
+            int end   = input.indexOf( ')', start );
             
-			String subExp = subString( expressao, start-1, end+1 );			
+			String subExp = subString( input, start-1, end+1 );			
 			String resultString = solveExp( subExp );
-            // MyIO.println( "Passo: " + expressao );
-			expressao = subString( expressao, 0, start-1 ) + 
+
+            input = subString( input, 0, start-1 ) + 
                         resultString + 
-                        subString( expressao, end+1, expressao.length() );	
-		} // end while 
-		result = isEquals( expressao, "1" );										
-        return ( result );
-    } // end solveEquation ( )
+                        subString( input, end+1, input.length() );	
+
+            return ( solveEquationRec( input ) );
+		} 
+        else
+        {
+            return ( isEquals(input, "1") );   
+        }// end if
+    } // end solveEquationRec ( )
 
     /**
      *  Funcao para verificar se duas strings sao iguais.
