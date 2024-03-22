@@ -155,7 +155,7 @@ public class AlgebraBooleanaRec
                         subString( input, end+1, input.length() );	
 
             return ( solveEquationRec( input ) );
-		} 
+        } 
         else
         {
             return ( isEquals(input, "1") );   
